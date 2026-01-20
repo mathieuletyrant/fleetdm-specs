@@ -1,5 +1,6 @@
 import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi';
 import { registerActivityRoutes } from './routes/activity';
+import { registerSoftwareRoutes } from './routes/software';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -16,6 +17,7 @@ registry.registerComponent('securitySchemes', 'BearerAuth', {
 
 // Register routes
 registerActivityRoutes(registry);
+registerSoftwareRoutes(registry);
 
 // Generate OpenAPI documentation
 const generator = new OpenApiGeneratorV31(registry.definitions);

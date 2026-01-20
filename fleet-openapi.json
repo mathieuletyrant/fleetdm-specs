@@ -185,6 +185,74 @@
           "has_previous_results"
         ],
         "description": "Pagination metadata"
+      },
+      "CreateFleetMaintainedAppResponse": {
+        "type": "object",
+        "properties": {
+          "software_title_id": {
+            "type": "integer",
+            "description": "The ID of the created software title",
+            "example": 234
+          }
+        },
+        "required": [
+          "software_title_id"
+        ],
+        "description": "Response for create Fleet-maintained app endpoint"
+      },
+      "CreateFleetMaintainedAppRequest": {
+        "type": "object",
+        "properties": {
+          "fleet_maintained_app_id": {
+            "type": "integer",
+            "description": "The ID of Fleet-maintained app",
+            "example": 3
+          },
+          "team_id": {
+            "type": "integer",
+            "description": "The team ID. Adds Fleet-maintained app to the specified team",
+            "example": 2
+          },
+          "install_script": {
+            "type": "string",
+            "description": "Command that Fleet runs to install software. If not specified Fleet runs default install command for each Fleet-maintained app"
+          },
+          "pre_install_query": {
+            "type": "string",
+            "description": "Query that is pre-install condition. If the query doesn't return any result, Fleet won't proceed to install"
+          },
+          "post_install_script": {
+            "type": "string",
+            "description": "The contents of the script to run after install. If the specified script fails (exit code non-zero) software install will be marked as failed and rolled back"
+          },
+          "self_service": {
+            "type": "boolean",
+            "description": "Self-service software is optional and can be installed by the end user"
+          },
+          "labels_include_any": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Target hosts that have any label, specified by label name, in the array"
+          },
+          "labels_exclude_any": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Target hosts that don't have any label, specified by label name, in the array"
+          },
+          "automatic_install": {
+            "type": "boolean",
+            "description": "Create a policy that triggers a software install only on hosts missing the software"
+          }
+        },
+        "required": [
+          "fleet_maintained_app_id",
+          "team_id"
+        ],
+        "description": "Request body for creating a Fleet-maintained app"
       }
     },
     "parameters": {}
@@ -313,6 +381,47 @@
           },
           "401": {
             "description": "Unauthorized - Invalid or missing authentication token"
+          }
+        }
+      }
+    },
+    "/api/v1/fleet/software/fleet_maintained_apps": {
+      "post": {
+        "summary": "Create Fleet-maintained app",
+        "description": "Add Fleet-maintained app so it's available for install.\n\n**Experimental feature.** This feature is undergoing rapid improvement, which may result in breaking changes to the API or configuration surface. It is not recommended for use in automated workflows.\n\n_Available in Fleet Premium._\n\nOnly one of `labels_include_any` or `labels_exclude_any` can be specified. If neither are specified, all hosts are targeted.\n\nAdd the `X-Fleet-Scripts-Encoded: base64` header line to parse `install_script`, `uninstall_script`, `post_install_script`, and `pre_install_query` fields as base64-encoded rather than as-is.",
+        "tags": [
+          "Software"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFleetMaintainedAppRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created Fleet-maintained app",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateFleetMaintainedAppResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing authentication token"
+          },
+          "402": {
+            "description": "Payment required - Fleet Premium license required"
           }
         }
       }
