@@ -4,7 +4,8 @@ Add a new Fleet REST API endpoint to the OpenAPI specification.
 
 ## Input
 
-$ARGUMENTS - The Fleet API documentation URL (e.g., https://fleetdm.com/docs/rest-api/rest-api#list-hosts)
+$ARGUMENTS - The Fleet API documentation URL
+The file with the specs is available at : @rest-api.md
 
 ## Instructions
 
@@ -35,29 +36,43 @@ $ARGUMENTS - The Fleet API documentation URL (e.g., https://fleetdm.com/docs/res
 ## Schema Template
 
 ```typescript
-import { z } from 'zod';
-import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+import { z } from "zod";
+import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi";
 
 extendZodWithOpenApi(z);
 
-export const ResourceSchema = z.object({
-  id: z.number().int().openapi({ description: 'Unique identifier' }),
-  // ... fields from documentation
-}).openapi('Resource');
+export const ResourceSchema = z
+  .object({
+    id: z.number().int().openapi({ description: "Unique identifier" }),
+    // ... fields from documentation
+  })
+  .openapi("Resource");
 
-export const ListResourceQuerySchema = z.object({
-  page: z.coerce.number().int().optional().openapi({ description: 'Page number' }),
-  per_page: z.coerce.number().int().optional().openapi({ description: 'Results per page' }),
-  // ... query params from documentation
-}).openapi('ListResourceQuery');
+export const ListResourceQuerySchema = z
+  .object({
+    page: z.coerce
+      .number()
+      .int()
+      .optional()
+      .openapi({ description: "Page number" }),
+    per_page: z.coerce
+      .number()
+      .int()
+      .optional()
+      .openapi({ description: "Results per page" }),
+    // ... query params from documentation
+  })
+  .openapi("ListResourceQuery");
 
-export const ListResourceResponseSchema = z.object({
-  resources: z.array(ResourceSchema),
-  meta: z.object({
-    has_next_results: z.boolean(),
-    has_previous_results: z.boolean(),
-  }),
-}).openapi('ListResourceResponse');
+export const ListResourceResponseSchema = z
+  .object({
+    resources: z.array(ResourceSchema),
+    meta: z.object({
+      has_next_results: z.boolean(),
+      has_previous_results: z.boolean(),
+    }),
+  })
+  .openapi("ListResourceResponse");
 
 export type Resource = z.infer<typeof ResourceSchema>;
 ```
@@ -66,26 +81,26 @@ export type Resource = z.infer<typeof ResourceSchema>;
 
 ```typescript
 registry.registerPath({
-  method: 'get',
-  path: '/api/v1/fleet/resources',
-  summary: 'List resources',
-  description: 'Description from documentation',
-  tags: ['Resources'],
+  method: "get",
+  path: "/api/v1/fleet/resources",
+  summary: "List resources",
+  description: "Description from documentation",
+  tags: ["Resources"],
   security: [{ BearerAuth: [] }],
   request: {
     query: ListResourceQuerySchema,
   },
   responses: {
     200: {
-      description: 'Success',
+      description: "Success",
       content: {
-        'application/json': {
+        "application/json": {
           schema: ListResourceResponseSchema,
         },
       },
     },
     401: {
-      description: 'Unauthorized',
+      description: "Unauthorized",
     },
   },
 });
