@@ -1,5 +1,5 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.3",
   "info": {
     "title": "Fleet REST API",
     "version": "1.0.0",
@@ -25,61 +25,25 @@
       }
     },
     "schemas": {
-      "ActivityDetails": {
+      "ListActivitiesResponse": {
         "type": "object",
         "properties": {
-          "status": {
-            "type": "string",
-            "description": "Status of the activity"
+          "activities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Activity"
+            },
+            "description": "Array of activities"
           },
-          "host_id": {
-            "type": "number",
-            "description": "ID of the host"
-          },
-          "host_display_name": {
-            "type": "string",
-            "description": "Display name of the host"
-          },
-          "policy_id": {
-            "type": [
-              "number",
-              "null"
-            ],
-            "description": "ID of the policy"
-          },
-          "policy_name": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "description": "Name of the policy"
-          },
-          "install_uuid": {
-            "type": "string",
-            "description": "Installation UUID"
-          },
-          "self_service": {
-            "type": "boolean",
-            "description": "Whether it was self-service"
-          },
-          "software_title": {
-            "type": "string",
-            "description": "Software title"
-          },
-          "software_package": {
-            "type": "string",
-            "description": "Software package name"
-          },
-          "team_id": {
-            "type": "number",
-            "description": "ID of the team"
-          },
-          "team_name": {
-            "type": "string",
-            "description": "Name of the team"
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
           }
         },
-        "description": "Activity detail information varies by activity type"
+        "required": [
+          "activities",
+          "meta"
+        ],
+        "description": "Response for list activities endpoint"
       },
       "Activity": {
         "type": "object",
@@ -133,6 +97,61 @@
         ],
         "description": "Represents a single activity in Fleet"
       },
+      "ActivityDetails": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of the activity"
+          },
+          "host_id": {
+            "type": "number",
+            "description": "ID of the host"
+          },
+          "host_display_name": {
+            "type": "string",
+            "description": "Display name of the host"
+          },
+          "policy_id": {
+            "type": "number",
+            "nullable": true,
+            "description": "ID of the policy"
+          },
+          "policy_name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Name of the policy"
+          },
+          "install_uuid": {
+            "type": "string",
+            "description": "Installation UUID"
+          },
+          "self_service": {
+            "type": "boolean",
+            "description": "Whether it was self-service"
+          },
+          "software_title": {
+            "type": "string",
+            "description": "Software title"
+          },
+          "software_package": {
+            "type": "string",
+            "description": "Software package name"
+          },
+          "team_id": {
+            "type": "number",
+            "description": "ID of the team"
+          },
+          "team_name": {
+            "type": "string",
+            "description": "Name of the team"
+          }
+        },
+        "additionalProperties": {
+          "nullable": true
+        },
+        "description": "Activity detail information varies by activity type"
+      },
       "Meta": {
         "type": "object",
         "properties": {
@@ -150,26 +169,6 @@
           "has_previous_results"
         ],
         "description": "Pagination metadata"
-      },
-      "ListActivitiesResponse": {
-        "type": "object",
-        "properties": {
-          "activities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Activity"
-            },
-            "description": "Array of activities"
-          },
-          "meta": {
-            "$ref": "#/components/schemas/Meta"
-          }
-        },
-        "required": [
-          "activities",
-          "meta"
-        ],
-        "description": "Response for list activities endpoint"
       }
     },
     "parameters": {}
@@ -190,27 +189,25 @@
         "parameters": [
           {
             "schema": {
-              "type": [
-                "integer",
-                "null"
-              ],
+              "type": "integer",
+              "nullable": true,
               "description": "Page number of the results to fetch",
               "example": 0
             },
             "required": false,
+            "description": "Page number of the results to fetch",
             "name": "page",
             "in": "query"
           },
           {
             "schema": {
-              "type": [
-                "integer",
-                "null"
-              ],
+              "type": "integer",
+              "nullable": true,
               "description": "Results per page",
               "example": 10
             },
             "required": false,
+            "description": "Results per page",
             "name": "per_page",
             "in": "query"
           },
@@ -221,6 +218,7 @@
               "example": "created_at"
             },
             "required": false,
+            "description": "What to order results by. Can be any column in the activities table",
             "name": "order_key",
             "in": "query"
           },
@@ -235,6 +233,7 @@
               "example": "desc"
             },
             "required": false,
+            "description": "The direction of the order given the order key. Default is \"asc\"",
             "name": "order_direction",
             "in": "query"
           },
@@ -244,6 +243,7 @@
               "description": "Search query keywords. Searchable fields include actor_full_name and actor_email"
             },
             "required": false,
+            "description": "Search query keywords. Searchable fields include actor_full_name and actor_email",
             "name": "query",
             "in": "query"
           },
@@ -253,6 +253,7 @@
               "description": "Indicates the activity type to filter by"
             },
             "required": false,
+            "description": "Indicates the activity type to filter by",
             "name": "activity_type",
             "in": "query"
           },
@@ -263,6 +264,7 @@
               "description": "Filters to include only activities that happened after this date"
             },
             "required": false,
+            "description": "Filters to include only activities that happened after this date",
             "name": "start_created_at",
             "in": "query"
           },
@@ -273,6 +275,7 @@
               "description": "Filters to include only activities that happened before this date. If not specified, set to now"
             },
             "required": false,
+            "description": "Filters to include only activities that happened before this date. If not specified, set to now",
             "name": "end_created_at",
             "in": "query"
           }
@@ -294,6 +297,5 @@
         }
       }
     }
-  },
-  "webhooks": {}
+  }
 }

@@ -2,12 +2,10 @@
   "name": "fleetdm-openapi-generator",
   "version": "1.0.0",
   "description": "Generator for OpenAPI 3.1 specs from FleetDM REST API using Zod",
-  "main": "dist/server.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "dev": "ts-node src/server.ts",
-    "generate": "ts-node src/generate-openapi.ts"
+    "generate": "ts-node src/generate-openapi.ts",
+    "serve": "npm run generate && swagger-ui-watcher openapi.json",
+    "dev": "npm run serve"
   },
   "keywords": [
     "fleetdm",
@@ -19,14 +17,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@asteasolutions/zod-to-openapi": "^7.1.2",
-    "express": "^5.0.0",
-    "zod": "^3.23.8"
+    "@asteasolutions/zod-to-openapi": "^8.4.0",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
     "@types/node": "^22.0.0",
+    "swagger-ui-watcher": "^2.1.14",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.9.3"
   }
 }

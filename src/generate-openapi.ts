@@ -1,4 +1,4 @@
-import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi';
+import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
 import { 
   ListActivitiesQuerySchema, 
   ListActivitiesResponseSchema 
@@ -46,10 +46,10 @@ For a comprehensive list of activity types and detailed information, please see 
 });
 
 // Generate OpenAPI documentation
-const generator = new OpenApiGeneratorV31(registry.definitions);
+const generator = new OpenApiGeneratorV3(registry.definitions);
 
 const openApiDocument = generator.generateDocument({
-  openapi: '3.1.0',
+  openapi: '3.0.3',
   info: {
     title: 'Fleet REST API',
     version: '1.0.0',
