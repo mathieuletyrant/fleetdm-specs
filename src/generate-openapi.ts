@@ -33,8 +33,19 @@ const openApiDocument = generator.generateDocument({
   },
   servers: [
     {
-      url: 'https://fleet.example.com',
+      url: '{protocol}://{host}',
       description: 'Fleet server',
+      variables: {
+        protocol: {
+          default: 'https',
+          enum: ['https', 'http'],
+          description: 'Protocol to use',
+        },
+        host: {
+          default: 'primo.mdm.getprimo.com',
+          description: 'Fleet server hostname',
+        },
+      },
     },
   ],
 });
