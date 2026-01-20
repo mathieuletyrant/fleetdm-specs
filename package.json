@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Generator for OpenAPI 3.1 specs from FleetDM REST API using Zod",
   "scripts": {
-    "generate": "ts-node src/generate-openapi.ts",
-    "serve": "npm run generate && swagger-ui-watcher openapi.json",
+    "generate": "tsx src/generate-openapi.ts",
     "dev": "npm run serve"
   },
   "keywords": [
@@ -22,8 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "swagger-ui-watcher": "^2.1.14",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }

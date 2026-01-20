@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.3",
+  "openapi": "3.1.0",
   "info": {
     "title": "Fleet REST API",
     "version": "1.0.0",
@@ -113,13 +113,17 @@
             "description": "Display name of the host"
           },
           "policy_id": {
-            "type": "number",
-            "nullable": true,
+            "type": [
+              "number",
+              "null"
+            ],
             "description": "ID of the policy"
           },
           "policy_name": {
-            "type": "string",
-            "nullable": true,
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "Name of the policy"
           },
           "install_uuid": {
@@ -147,9 +151,7 @@
             "description": "Name of the team"
           }
         },
-        "additionalProperties": {
-          "nullable": true
-        },
+        "additionalProperties": {},
         "description": "Activity detail information varies by activity type"
       },
       "Meta": {
@@ -189,8 +191,10 @@
         "parameters": [
           {
             "schema": {
-              "type": "integer",
-              "nullable": true,
+              "type": [
+                "integer",
+                "null"
+              ],
               "description": "Page number of the results to fetch",
               "example": 0
             },
@@ -201,8 +205,10 @@
           },
           {
             "schema": {
-              "type": "integer",
-              "nullable": true,
+              "type": [
+                "integer",
+                "null"
+              ],
               "description": "Results per page",
               "example": 10
             },
@@ -297,5 +303,6 @@
         }
       }
     }
-  }
+  },
+  "webhooks": {}
 }

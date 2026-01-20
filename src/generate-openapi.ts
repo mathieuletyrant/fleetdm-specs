@@ -1,8 +1,5 @@
-import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
-import { 
-  ListActivitiesQuerySchema, 
-  ListActivitiesResponseSchema 
-} from './schemas/activity';
+import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi';
+import { registerActivityRoutes } from './routes/activity';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -17,39 +14,14 @@ registry.registerComponent('securitySchemes', 'BearerAuth', {
   description: 'API token authentication. Get your token from My Account > Get API token in the Fleet UI.',
 });
 
-// Register the GET /api/v1/fleet/activities endpoint
-registry.registerPath({
-  method: 'get',
-  path: '/api/v1/fleet/activities',
-  summary: 'List activities',
-  description: `Returns a list of the activities that have been performed in Fleet.
-
-For a comprehensive list of activity types and detailed information, please see the [audit logs](https://fleetdm.com/docs/using-fleet/audit-activities) page.`,
-  tags: ['Activities'],
-  security: [{ BearerAuth: [] }],
-  request: {
-    query: ListActivitiesQuerySchema,
-  },
-  responses: {
-    200: {
-      description: 'Successfully retrieved activities',
-      content: {
-        'application/json': {
-          schema: ListActivitiesResponseSchema,
-        },
-      },
-    },
-    401: {
-      description: 'Unauthorized - Invalid or missing authentication token',
-    },
-  },
-});
+// Register routes
+registerActivityRoutes(registry);
 
 // Generate OpenAPI documentation
-const generator = new OpenApiGeneratorV3(registry.definitions);
+const generator = new OpenApiGeneratorV31(registry.definitions);
 
 const openApiDocument = generator.generateDocument({
-  openapi: '3.0.3',
+  openapi: '3.1.0',
   info: {
     title: 'Fleet REST API',
     version: '1.0.0',
@@ -68,7 +40,7 @@ const openApiDocument = generator.generateDocument({
 });
 
 // Write to file
-const outputPath = path.join(__dirname, '..', 'openapi.json');
+const outputPath = path.join(__dirname, '..', 'fleet-openapi.json');
 fs.writeFileSync(outputPath, JSON.stringify(openApiDocument, null, 2));
 
 console.log('✓ OpenAPI spec generated successfully!');
