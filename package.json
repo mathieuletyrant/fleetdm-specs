@@ -1,0 +1,21 @@
+{
+  "name": "fleetdm-openapi-generator",
+  "version": "1.0.0",
+  "description": "Generator for OpenAPI 3.1 specs from FleetDM REST API documentation",
+  "main": "parser.js",
+  "scripts": {
+    "start": "node parser.js",
+    "generate": "node parser.js rest-api.md openapi.yaml"
+  },
+  "keywords": [
+    "fleetdm",
+    "openapi",
+    "api",
+    "documentation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "yaml": "^2.3.4"
+  }
+}

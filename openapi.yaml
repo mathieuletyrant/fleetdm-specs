@@ -1,0 +1,71 @@
+openapi: 3.1.0
+info:
+  title: Fleet REST API
+  description: REST API for Fleet device management platform
+  version: 1.0.0
+  contact:
+    name: Fleet
+    url: https://fleetdm.com
+servers:
+  - url: https://fleet.example.com
+    description: Fleet server
+security:
+  - BearerAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: API token authentication. Get your token from My Account > Get API
+        token in the Fleet UI.
+  schemas: {}
+  responses: {}
+paths:
+  /api/v1/fleet/activities:
+    get:
+      summary: List activities
+      description: Returns a list of the activities that have been performed in Fleet.
+        For a comprehensive list of activity types and detailed information,
+        please see the [audit
+        logs](https://fleetdm.com/docs/using-fleet/audit-activities) page.
+      tags:
+        - Activities
+      parameters:
+        - name: page
+          in: query
+          description: Page number of the results to fetch.
+          required: false
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Results per page.
+          required: false
+          schema:
+            type: integer
+        - name: order_key
+          in: query
+          description: What to order results by. Can be any column in the `activities`
+            table.
+          required: false
+          schema:
+            type: string
+        - name: order_direction
+          in: query
+          description: '**Requires `order_key`**. The direction of the order given the
+            order key. Options include `"asc"` and `"desc"`. Default is
+            `"asc"`.'
+          required: false
+          schema:
+            type: string
+        - name: end_created_at
+          in: query
+          description: Filters to include only activities that happened before this date.
+            If not specified, set to now.
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
