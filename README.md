@@ -45,7 +45,7 @@ npm run generate
 ### View with Swagger UI
 
 ```bash
-npm run dev
+npm run serve
 ```
 
 Opens Swagger UI at `http://localhost:8080` with auto-reload on spec changes.
