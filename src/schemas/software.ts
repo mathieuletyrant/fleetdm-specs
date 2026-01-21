@@ -4,12 +4,13 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 // Extend Zod with OpenAPI methods
 extendZodWithOpenApi(z);
 
-export const FleetSoftwarePlatform = z.enum(['windows', 'macos', 'linux', 'ios', "ipados", "android"]).openapi('FleetSoftwarePlatform', {
+export const FleetSoftwarePlatformSchema = z.enum(['windows', 'macos', 'linux', 'ios', "ipados", "android"]).openapi('FleetSoftwarePlatform', {
   description: 'The operating system platform for the software',
+  title: 'FleetSoftwarePlatform',
 });
 
-export const FleetSoftwarePackage = z.object({
-  platform: FleetSoftwarePlatform,
+export const FleetSoftwarePackageSchema = z.object({
+  platform: FleetSoftwarePlatformSchema,
   fleet_maintained_app_id: z.number().int().openapi({
     description: 'The ID of the Fleet-maintained app',
     example: 42
@@ -94,7 +95,3 @@ export const CreateFleetMaintainedAppResponseSchema = z.object({
 }).openapi('CreateFleetMaintainedAppResponse', {
   description: 'Response for create Fleet-maintained app endpoint'
 });
-
-// TypeScript types derived from schemas
-export type CreateFleetMaintainedAppRequest = z.infer<typeof CreateFleetMaintainedAppRequestSchema>;
-export type CreateFleetMaintainedAppResponse = z.infer<typeof CreateFleetMaintainedAppResponseSchema>;

@@ -3,13 +3,14 @@ import { z } from 'zod';
 import {
   CreateFleetMaintainedAppRequestSchema,
   CreateFleetMaintainedAppResponseSchema,
-  FleetSoftwarePackage,
-  FleetSoftwarePlatform
+  FleetSoftwarePackageSchema,
+  FleetSoftwarePlatformSchema
 } from '../schemas/software';
 
 export function registerSoftwareRoutes(registry: OpenAPIRegistry) {
-  // Register FleetSoftwarePlatform as a reusable component
-  registry.register('FleetSoftwarePlatform', FleetSoftwarePlatform);
+  // Register reusable components
+  registry.register('FleetSoftwarePlatform', FleetSoftwarePlatformSchema);
+  registry.register('FleetSoftwarePackage', FleetSoftwarePackageSchema);
 
   // GET /api/v1/fleet/software/titles
   registry.registerPath({
@@ -30,7 +31,7 @@ export function registerSoftwareRoutes(registry: OpenAPIRegistry) {
         vulnerable: z.coerce.boolean().optional().openapi({ description: 'Filter to only vulnerable software' }),
         available_for_install: z.coerce.boolean().optional().openapi({ description: 'Filter to software available for install' }),
         self_service: z.coerce.boolean().optional().openapi({ description: 'Filter to self-service software' }),
-        platform: FleetSoftwarePlatform.optional().openapi({ description: 'Platform filter (comma-separated)' }),
+        platform: FleetSoftwarePlatformSchema.optional().openapi({ description: 'Platform filter (comma-separated)' }),
       }),
     },
     responses: {
@@ -42,7 +43,7 @@ export function registerSoftwareRoutes(registry: OpenAPIRegistry) {
               software_titles: z.array(z.object({
                 id: z.number().int(),
                 name: z.string(),
-                software_package: FleetSoftwarePackage.nullable(),
+                software_package: FleetSoftwarePackageSchema.nullable(),
                 app_store_app: z.any().nullable(),
                 versions_count: z.number().int(),
                 source: z.string(),
@@ -104,7 +105,7 @@ export function registerSoftwareRoutes(registry: OpenAPIRegistry) {
         order_key: z.string().optional().openapi({ description: 'Column to order by' }),
         order_direction: z.enum(['asc', 'desc']).optional().openapi({ description: 'Order direction' }),
         team_id: z.coerce.number().int().optional().openapi({ description: 'Team ID filter' }),
-        platform: FleetSoftwarePlatform.optional().openapi({ description: 'Platform filter' }),
+        platform: FleetSoftwarePlatformSchema.optional().openapi({ description: 'Platform filter' }),
         os_name: z.string().optional().openapi({ description: 'OS name filter' }),
         os_version: z.string().optional().openapi({ description: 'OS version filter' }),
       }),
