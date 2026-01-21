@@ -8,8 +8,8 @@ import {
 } from '../schemas/software';
 
 export function registerSoftwareRoutes(registry: OpenAPIRegistry) {
-  
-
+  // Register FleetSoftwarePlatform as a reusable component
+  registry.register('FleetSoftwarePlatform', FleetSoftwarePlatform);
 
   // GET /api/v1/fleet/software/titles
   registry.registerPath({

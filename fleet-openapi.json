@@ -135,6 +135,18 @@
       }
     },
     "schemas": {
+      "FleetSoftwarePlatform": {
+        "type": "string",
+        "enum": [
+          "windows",
+          "macos",
+          "linux",
+          "ios",
+          "ipados",
+          "android"
+        ],
+        "description": "The operating system platform for the software"
+      },
       "LoginResponse": {
         "type": "object",
         "properties": {
@@ -2719,18 +2731,6 @@
           "automatic_install_policies"
         ],
         "description": "Schema representing a software package managed by Fleet"
-      },
-      "FleetSoftwarePlatform": {
-        "type": "string",
-        "enum": [
-          "windows",
-          "macos",
-          "linux",
-          "ios",
-          "ipados",
-          "android"
-        ],
-        "description": "The operating system platform for the software"
       },
       "CreateFleetMaintainedAppResponse": {
         "type": "object",
