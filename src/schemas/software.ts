@@ -4,11 +4,9 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 // Extend Zod with OpenAPI methods
 extendZodWithOpenApi(z);
 
-export const FleetSoftwarePlatform = z.enum(['windows', 'macos', 'linux', 'ios', "ipados", "android"]).openapi({
+export const FleetSoftwarePlatform = z.enum(['windows', 'macos', 'linux', 'ios', "ipados", "android"]).openapi('FleetSoftwarePlatform', {
   description: 'The operating system platform for the software',
 });
-
-
 
 export const FleetSoftwarePackage = z.object({
   platform: FleetSoftwarePlatform,
