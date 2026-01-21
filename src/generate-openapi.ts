@@ -85,11 +85,9 @@ const openApiDocument = generator.generateDocument({
         protocol: {
           default: 'https',
           enum: ['https', 'http'],
-          description: 'Protocol to use',
         },
         host: {
           default: 'api.fleetdm.com',
-          description: 'Fleet server hostname',
         },
       },
     },
@@ -121,6 +119,23 @@ const openApiDocument = generator.generateDocument({
     { name: 'Translator', description: 'Identifier translation' },
   ],
 });
+
+// Post-process: Ensure all path parameters have required: true (OpenAPI spec requirement)
+if (openApiDocument.paths) {
+  for (const pathItem of Object.values(openApiDocument.paths)) {
+    if (!pathItem) continue;
+    for (const method of ['get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'trace'] as const) {
+      const operation = pathItem[method];
+      if (operation && 'parameters' in operation && Array.isArray(operation.parameters)) {
+        for (const param of operation.parameters) {
+          if (param && typeof param === 'object' && 'in' in param && param.in === 'path') {
+            (param as { required: boolean }).required = true;
+          }
+        }
+      }
+    }
+  }
+}
 
 // Write to file
 const outputPath = path.join(__dirname, '..', 'fleet-openapi.json');
