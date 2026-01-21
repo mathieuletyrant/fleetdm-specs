@@ -4,6 +4,50 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 // Extend Zod with OpenAPI methods
 extendZodWithOpenApi(z);
 
+export const FleetSoftwarePlatform = z.enum(['windows', 'macos', 'linux', 'ios', "ipados", "android"]).openapi({
+  description: 'The operating system platform for the software',
+});
+
+
+
+export const FleetSoftwarePackage = z.object({
+  platform: FleetSoftwarePlatform,
+  fleet_maintained_app_id: z.number().int().openapi({
+    description: 'The ID of the Fleet-maintained app',
+    example: 42
+  }),
+  name: z.string().openapi({
+    description: 'The name of the software package',
+    example: 'FirefoxInstall.pkg'
+  }),
+  version: z.string().openapi({
+    description: 'The version of the software package',
+    example: '125.6'
+  }),
+  self_service: z.boolean().openapi({
+    description: 'Whether the software is available for self-service installation',
+    example: true
+  }),
+  automatic_install_policies: z.array(z.object({
+    id: z.number().int().openapi({
+      description: 'The ID of the policy',
+      example: 343
+    }),
+    name: z.string().openapi({
+      description: 'The name of the policy',
+      example: '[Install software] Firefox.app'
+    }),
+    fleet_maintained: z.boolean().openapi({
+      description: 'Whether the policy is Fleet-maintained',
+      example: false
+    }),
+  })).openapi({
+    description: 'List of policies that automatically install this software',
+  }),
+}).openapi('FleetSoftwarePackage', {
+  description: 'Schema representing a software package managed by Fleet',
+})
+
 /**
  * Create Fleet-maintained app request body schema
  */

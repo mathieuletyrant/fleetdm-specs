@@ -2651,6 +2651,84 @@
           }
         }
       },
+      "FleetSoftwarePackage": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": [
+              "windows",
+              "macos",
+              "linux",
+              "ios",
+              "ipados",
+              "android"
+            ],
+            "description": "The operating system platform for the software"
+          },
+          "fleet_maintained_app_id": {
+            "type": "integer",
+            "description": "The ID of the Fleet-maintained app",
+            "example": 42
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the software package",
+            "example": "FirefoxInstall.pkg"
+          },
+          "version": {
+            "type": "string",
+            "description": "The version of the software package",
+            "example": "125.6"
+          },
+          "self_service": {
+            "type": "boolean",
+            "description": "Whether the software is available for self-service installation",
+            "example": true
+          },
+          "automatic_install_policies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "The ID of the policy",
+                  "example": 343
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The name of the policy",
+                  "example": "[Install software] Firefox.app"
+                },
+                "fleet_maintained": {
+                  "type": "boolean",
+                  "description": "Whether the policy is Fleet-maintained",
+                  "example": false
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "fleet_maintained"
+              ]
+            },
+            "description": "List of policies that automatically install this software"
+          }
+        },
+        "required": [
+          "platform",
+          "fleet_maintained_app_id",
+          "name",
+          "version",
+          "self_service",
+          "automatic_install_policies"
+        ],
+        "description": "Schema representing a software package managed by Fleet"
+      },
       "CreateFleetMaintainedAppResponse": {
         "type": "object",
         "properties": {
@@ -11366,6 +11444,14 @@
           {
             "schema": {
               "type": "string",
+              "enum": [
+                "windows",
+                "macos",
+                "linux",
+                "ios",
+                "ipados",
+                "android"
+              ],
               "description": "Platform filter (comma-separated)"
             },
             "required": false,
@@ -11393,7 +11479,9 @@
                           "name": {
                             "type": "string"
                           },
-                          "software_package": {},
+                          "software_package": {
+                            "$ref": "#/components/schemas/FleetSoftwarePackage"
+                          },
                           "app_store_app": {},
                           "versions_count": {
                             "type": "integer"
@@ -11415,6 +11503,7 @@
                         "required": [
                           "id",
                           "name",
+                          "software_package",
                           "versions_count",
                           "source",
                           "hosts_count"
@@ -11646,6 +11735,14 @@
           {
             "schema": {
               "type": "string",
+              "enum": [
+                "windows",
+                "macos",
+                "linux",
+                "ios",
+                "ipados",
+                "android"
+              ],
               "description": "Platform filter"
             },
             "required": false,

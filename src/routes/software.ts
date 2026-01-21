@@ -2,7 +2,9 @@ import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 import {
   CreateFleetMaintainedAppRequestSchema,
-  CreateFleetMaintainedAppResponseSchema
+  CreateFleetMaintainedAppResponseSchema,
+  FleetSoftwarePackage,
+  FleetSoftwarePlatform
 } from '../schemas/software';
 
 export function registerSoftwareRoutes(registry: OpenAPIRegistry) {
@@ -25,7 +27,7 @@ export function registerSoftwareRoutes(registry: OpenAPIRegistry) {
         vulnerable: z.coerce.boolean().optional().openapi({ description: 'Filter to only vulnerable software' }),
         available_for_install: z.coerce.boolean().optional().openapi({ description: 'Filter to software available for install' }),
         self_service: z.coerce.boolean().optional().openapi({ description: 'Filter to self-service software' }),
-        platform: z.string().optional().openapi({ description: 'Platform filter (comma-separated)' }),
+        platform: FleetSoftwarePlatform.optional().openapi({ description: 'Platform filter (comma-separated)' }),
       }),
     },
     responses: {
@@ -37,7 +39,7 @@ export function registerSoftwareRoutes(registry: OpenAPIRegistry) {
               software_titles: z.array(z.object({
                 id: z.number().int(),
                 name: z.string(),
-                software_package: z.any().nullable(),
+                software_package: FleetSoftwarePackage.nullable(),
                 app_store_app: z.any().nullable(),
                 versions_count: z.number().int(),
                 source: z.string(),
@@ -99,7 +101,7 @@ export function registerSoftwareRoutes(registry: OpenAPIRegistry) {
         order_key: z.string().optional().openapi({ description: 'Column to order by' }),
         order_direction: z.enum(['asc', 'desc']).optional().openapi({ description: 'Order direction' }),
         team_id: z.coerce.number().int().optional().openapi({ description: 'Team ID filter' }),
-        platform: z.string().optional().openapi({ description: 'Platform filter' }),
+        platform: FleetSoftwarePlatform.optional().openapi({ description: 'Platform filter' }),
         os_name: z.string().optional().openapi({ description: 'OS name filter' }),
         os_version: z.string().optional().openapi({ description: 'OS version filter' }),
       }),
