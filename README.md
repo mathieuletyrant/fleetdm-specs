@@ -61,11 +61,13 @@ Run the following command in Claude Code:
 ```
 
 Example:
+
 ```
 /add-fleet-route https://fleetdm.com/docs/rest-api/rest-api#list-hosts
 ```
 
 Claude will automatically:
+
 1. Fetch the API documentation
 2. Create the Zod schema in `src/schemas/`
 3. Register the endpoint in `generate-openapi.ts`
@@ -76,13 +78,6 @@ Claude will automatically:
 1. **Create Zod schema** in `src/schemas/<resource>.ts`
 2. **Register endpoint** in `src/generate-openapi.ts`
 3. **Regenerate**: `npm run generate`
-
-## Tech Stack
-
-- **zod**: ^4.3.5 - Schema validation
-- **@asteasolutions/zod-to-openapi**: ^8.4.0 - OpenAPI generation
-- **typescript**: ^5.9.3
-- **swagger-ui-watcher**: ^2.1.14 - API documentation viewer
 
 ## License
 
