@@ -88,7 +88,7 @@ const openApiDocument = generator.generateDocument({
           description: 'Protocol to use',
         },
         host: {
-          default: 'primo.mdm.getprimo.com',
+          default: 'api.fleetdm.com',
           description: 'Fleet server hostname',
         },
       },

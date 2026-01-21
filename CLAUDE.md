@@ -10,7 +10,7 @@
 The OpenAPI spec uses server variables for flexible configuration. In Swagger UI, you can:
 
 - Select `http` or `https` protocol from the dropdown
-- Edit the host field to point to your Fleet server (default: `primofun.mdm.getprimo.com`)
+- Edit the host field to point to your Fleet server (default: `api.fleetdm.com`)
 
 ## Project Structure
 
